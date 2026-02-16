@@ -18,6 +18,8 @@ class HomePage extends StatelessWidget {
   //   print("hasRoll: $checkRoll");
   //   print("User: $user");
   // }
+  
+  //  || await _authservice.hasRole('ROLE_VENDOR')
 
   @override
   Widget build(BuildContext context) {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:multivendor_flutter_app/models/vendor/vendor_request.dart';
 import 'package:multivendor_flutter_app/services/vendor_service.dart';
+import 'package:multivendor_flutter_app/ui/vendor/vendor_page/vendor_profile.dart';
 
 class VendorForm extends StatefulWidget {
   final VendorRequest? initialData; // Update এর জন্য
@@ -87,6 +88,10 @@ class _VendorFormState extends State<VendorForm> {
       if (widget.initialData == null) {
         // Create new vendor
         await _vendorService.createVendor(vendorRequest.toJson());
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => VendorProfile()),
+        );
       } else {
         // Update vendor: _vendorService.updateVendor(id, ...)
         await _vendorService.updateVendor(

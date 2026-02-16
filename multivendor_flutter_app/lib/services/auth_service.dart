@@ -1,86 +1,3 @@
-// import 'dart:convert';
-
-// import 'package:http/http.dart' as http;
-// import 'package:multivendor_flutter_app/models/auth/RegisterRequest.dart';
-// import 'package:multivendor_flutter_app/services/api_config.dart';
-// import 'package:shared_preferences/shared_preferences.dart';
-
-// class AuthService {
-//   Future<bool> login(String username, String password) async {
-//     final res = await http.post(
-//       Uri.parse("${ApiConfig.baseUrl}/auth/signin"),
-//       headers: await headers(),
-//       body: jsonEncode({"username": username, "password": password}),
-//     );
-
-//     if (res.statusCode == 200) {
-//       final data = jsonDecode(res.body);
-//       final token = data['jwtToken'];
-
-//       if (token != null && token.isNotEmpty) {
-//         final prefs = await SharedPreferences.getInstance();
-//         await prefs.setString('jwtToken', token);
-//         return true;
-//       }
-//     }
-
-//     return false;
-//   }
-
-//   Future<void> logout() async {
-//     final prefs = await SharedPreferences.getInstance();
-//     await prefs.remove('jwtToken');
-//   }
-
-//   Future<String?> getToken() async {
-//     final prefs = await SharedPreferences.getInstance();
-//     return prefs.getString('jwtToken');
-//   }
-
-//   Future<Map<String, String>> headers({bool auth = false}) async {
-//     final token = await getToken();
-//     if (auth && (token == null || token.isEmpty)) {
-//       throw Exception("No JWT token found. Please login first.");
-//     }
-
-//     final headers = <String, String>{
-//       "Content-Type": "application/json",
-//       if (auth) "Authorization": "Bearer $token",
-//     };
-
-//     return headers;
-//   }
-
-//   // ================= REGISTER =================
-
-//   Future<bool> register(Registration request) async {
-//     final res = await http.post(
-//       Uri.parse("${ApiConfig.baseUrl}/auth/signup"),
-//       headers: await headers(),
-//       body: jsonEncode(request.toJson()),
-//     );
-//     return res.statusCode == 200 || res.statusCode == 201;
-//   }
-
-//   // Future<Map<String, String>> headers({
-//   //   bool auth = false,
-//   //   bool isMultipart = false,
-//   // }) async {
-//   //   final token = await getToken();
-
-//   //   if (auth && (token == null || token.isEmpty)) {
-//   //     throw Exception("No JWT token found. Please login first.");
-//   //   }
-
-//   //   final headers = <String, String>{
-//   //     if (!isMultipart) "Content-Type": "application/json",
-//   //     if (auth) "Authorization": "Bearer $token",
-//   //   };
-
-//   //   return headers;
-//   // }
-// }
-
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:multivendor_flutter_app/models/auth/RegisterRequest.dart';
@@ -99,6 +16,8 @@ class AuthService {
         headers: await headers(),
         body: jsonEncode({"username": username, "password": password}),
       );
+
+      print("Authentication:-----------$res");
 
       if (res.statusCode == 200) {
         final data = jsonDecode(res.body);
