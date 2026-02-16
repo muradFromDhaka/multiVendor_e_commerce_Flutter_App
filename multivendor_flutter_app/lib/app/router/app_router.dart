@@ -11,7 +11,7 @@ class AppRouter {
       /// USER ROUTES
       case RouteNames.home:
         if (userRole == Role.user) {
-          return MaterialPageRoute(builder: (_) => const HomePage());
+          return MaterialPageRoute(builder: (_) => HomePage());
         }
         return _accessDeniedRoute();
 

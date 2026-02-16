@@ -107,8 +107,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
         Navigator.pushReplacement(
           context,
           PageRouteBuilder(
-            pageBuilder: (context, animation, secondaryAnimation) =>
-                const HomePage(),
+            pageBuilder: (context, animation, secondaryAnimation) => HomePage(),
             // const AdminDashboardPage(),
             transitionsBuilder:
                 (context, animation, secondaryAnimation, child) {

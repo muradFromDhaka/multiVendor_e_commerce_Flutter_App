@@ -226,7 +226,10 @@ class AuthService {
     final user = await getCurrentUser();
     if (user == null) return false;
 
-    final roles = List<String>.from(user['roles'] ?? []);
+    final rolesDynamic = user['roles'] ?? [];
+
+    final roles = rolesDynamic.map<String>((r) => r.toString()).toList();
+
     return roles.contains(roleName);
   }
 

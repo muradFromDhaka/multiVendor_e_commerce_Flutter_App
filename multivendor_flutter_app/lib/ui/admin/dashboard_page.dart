@@ -10,6 +10,7 @@ import 'package:multivendor_flutter_app/ui/admin/orders_page.dart';
 import 'package:multivendor_flutter_app/ui/admin/payouts_page.dart';
 import 'package:multivendor_flutter_app/ui/admin/products_page.dart';
 import 'package:multivendor_flutter_app/ui/admin/reports_page.dart';
+import 'package:multivendor_flutter_app/ui/admin/roll_management_page.dart';
 import 'package:multivendor_flutter_app/ui/admin/vendors_page.dart';
 import 'package:multivendor_flutter_app/ui/auth/login_page.dart';
 
@@ -35,6 +36,7 @@ class _AdminHomePageState extends State<AdminDashboardPage> {
     InventoryPage(),
     DealsPage(),
     ReportsPage(),
+    RoleManagementPage(),
     VendorsPage(),
   ];
 

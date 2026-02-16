@@ -10,6 +10,7 @@ import 'package:multivendor_flutter_app/ui/user/product_page.dart';
 import 'package:multivendor_flutter_app/ui/user/reviews_page.dart';
 import 'package:multivendor_flutter_app/ui/user/user_profile_page.dart';
 import 'package:multivendor_flutter_app/ui/user/wishlist_page.dart';
+import 'package:multivendor_flutter_app/ui/vendor/vendor_page/vendor_form.dart';
 
 class UserHomePage extends StatefulWidget {
   const UserHomePage({super.key});
@@ -32,6 +33,7 @@ class _AdminHomePageState extends State<UserHomePage> {
     ReviewsPage(),
     WishlistPage(),
     UserProfile(),
+    VendorForm(),
   ];
 
   void onLogout() async {
