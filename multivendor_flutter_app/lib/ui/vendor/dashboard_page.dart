@@ -34,7 +34,7 @@ class _AdminHomePageState extends State<VendorDashboardPage> {
     PayoutsPage(),
     EarningsPage(),
     ReportsPage(),
-    VendorForm(),
+    // VendorForm(),
     VendorProfile(),
   ];
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:multivendor_flutter_app/services/auth_service.dart';
 import 'package:multivendor_flutter_app/ui/admin/admin_home.dart';
-import 'package:multivendor_flutter_app/ui/admin/brand_page.dart';
+import 'package:multivendor_flutter_app/ui/admin/brand/brand_list.dart';
 import 'package:multivendor_flutter_app/ui/admin/category_page.dart';
 import 'package:multivendor_flutter_app/ui/admin/common_widget.dart';
 import 'package:multivendor_flutter_app/ui/admin/deals_page.dart';
@@ -28,7 +28,7 @@ class _AdminHomePageState extends State<AdminDashboardPage> {
 
   final pages = [
     AdminHomePage(),
-    BrandPage(),
+    BrandList(),
     CategoryPage(),
     ProductsPage(),
     OrdersPage(),
