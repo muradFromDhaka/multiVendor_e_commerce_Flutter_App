@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:multivendor_flutter_app/models/brand/brand_response.dart';
+import 'package:multivendor_flutter_app/services/api_config.dart';
 import 'package:multivendor_flutter_app/services/brandService.dart';
 
 import 'brand_form.dart';
@@ -195,7 +196,7 @@ class _BrandCard extends StatelessWidget {
           CircleAvatar(
             radius: 28,
             backgroundImage: brand.logoUrl != null
-                ? NetworkImage("http://192.168.0.215:8080/${brand.logoUrl!}")
+                ? NetworkImage("${ApiConfig.baseUrl}/${brand.logoUrl!}")
                 : null,
             child: brand.logoUrl == null
                 ? const Icon(Icons.image_not_supported)

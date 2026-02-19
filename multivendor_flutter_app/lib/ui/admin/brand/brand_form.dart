@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:multivendor_flutter_app/models/brand/brand_request.dart';
 import 'package:multivendor_flutter_app/models/brand/brand_response.dart';
+import 'package:multivendor_flutter_app/services/api_config.dart';
 import 'package:multivendor_flutter_app/services/brandService.dart';
 
 class BrandForm extends StatefulWidget {
@@ -137,7 +138,7 @@ class _BrandFormState extends State<BrandForm> {
     } else if (widget.brand?.logoUrl != null &&
         widget.brand!.logoUrl!.isNotEmpty) {
       imageProvider = NetworkImage(
-        "http://192.168.0.215:8080/${widget.brand!.logoUrl!}",
+        "${ApiConfig.baseUrl}/${widget.brand!.logoUrl!}",
       );
     }
 
