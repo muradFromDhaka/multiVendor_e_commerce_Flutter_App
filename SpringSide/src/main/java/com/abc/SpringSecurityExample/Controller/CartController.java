@@ -37,13 +37,6 @@ public class CartController {
 
 
 
-
-
-
-
-
-
-
     // Update a cart item for the current user
     @PutMapping("/update/{cartItemId}")
     public ResponseEntity<CartDto> updateCartItem(

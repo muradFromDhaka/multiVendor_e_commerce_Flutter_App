@@ -5,9 +5,6 @@ import 'package:multivendor_flutter_app/services/category_service.dart';
 import 'package:multivendor_flutter_app/services/vendor_service.dart';
 import 'package:multivendor_flutter_app/ui/public/public_product_details.dart';
 import 'package:multivendor_flutter_app/ui/public/public_productsearch_results.dart';
-import 'package:multivendor_flutter_app/ui/user/user_cart/cart_page.dart';
-import 'package:multivendor_flutter_app/ui/user/user_cart/cart_provider.dart';
-import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:multivendor_flutter_app/models/product/product_response.dart';
 import 'package:multivendor_flutter_app/models/category/category_response.dart';
@@ -363,10 +360,9 @@ class _PublicProductListPageState extends State<PublicProductListPage>
     );
   }
 
-  // void _addToCart(ProductResponse product) {
-  //   _showSnackBar('${product.name} added to cart');
-  //   _buildAddToCartButton(product);
-  // }
+  void _addToCart(ProductResponse product) {
+    _showSnackBar('${product.name} added to cart');
+  }
 
   void _buyNow(ProductResponse product) {
     _showSnackBar('Processing order for ${product.name}');
@@ -1288,72 +1284,73 @@ class _PublicProductListPageState extends State<PublicProductListPage>
                     if (isHorizontal)
                       Row(
                         children: [
-                          // Expanded(
-                          //   child: ElevatedButton(
-                          //     // onPressed: () => _addToCart(product),
-                          //     onPressed: () => _buildAddToCartButton(product),
-                          //     style: ElevatedButton.styleFrom(
-                          //       backgroundColor: Colors.orange,
-                          //       foregroundColor: Colors.white,
-                          //       minimumSize: const Size(0, 28),
-                          //       padding: EdgeInsets.zero,
-                          //       shape: RoundedRectangleBorder(
-                          //         borderRadius: BorderRadius.circular(6),
-                          //       ),
-                          //     ),
-                          //     child: const Text(
-                          //       'Cart',
-                          //       style: TextStyle(fontSize: 10),
-                          //     ),
-                          //   ),
-                          // ),
-                          // const SizedBox(width: 4),
-                          // Expanded(
-                          //   child: ElevatedButton(
-                          //     onPressed: () => _buyNow(product),
-                          //     style: ElevatedButton.styleFrom(
-                          //       backgroundColor: Colors.green,
-                          //       foregroundColor: Colors.white,
-                          //       minimumSize: const Size(0, 28),
-                          //       padding: EdgeInsets.zero,
-                          //       shape: RoundedRectangleBorder(
-                          //         borderRadius: BorderRadius.circular(6),
-                          //       ),
-                          //     ),
-                          //     child: const Text(
-                          //       'Buy',
-                          //       style: TextStyle(fontSize: 10),
-                          //     ),
-                          //   ),
-                          // ),
-                          Row(
-                            children: [
-                              Expanded(
-                                child: _buildAddToCartButton(
-                                  product,
-                                ), // ✅ শুধু এটা বসবে
-                              ),
-                              const SizedBox(width: 4),
-                              Expanded(
-                                child: ElevatedButton(
-                                  onPressed: () => _buyNow(product),
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.green,
-                                    foregroundColor: Colors.white,
-                                    minimumSize: const Size(0, 28),
-                                    padding: EdgeInsets.zero,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(6),
-                                    ),
-                                  ),
-                                  child: const Text(
-                                    'Buy',
-                                    style: TextStyle(fontSize: 10),
-                                  ),
+                          Expanded(
+                            child: ElevatedButton(
+                              // onPressed: () => _addToCart(product),
+                              onPressed: () => _addToCart(product),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.orange,
+                                foregroundColor: Colors.white,
+                                minimumSize: const Size(0, 28),
+                                padding: EdgeInsets.zero,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(6),
                                 ),
                               ),
-                            ],
+                              child: const Text(
+                                'Cart',
+                                style: TextStyle(fontSize: 10),
+                              ),
+                            ),
                           ),
+                          const SizedBox(width: 4),
+                          Expanded(
+                            child: ElevatedButton(
+                              onPressed: () => _buyNow(product),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.green,
+                                foregroundColor: Colors.white,
+                                minimumSize: const Size(0, 28),
+                                padding: EdgeInsets.zero,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(6),
+                                ),
+                              ),
+                              child: const Text(
+                                'Buy',
+                                style: TextStyle(fontSize: 10),
+                              ),
+                            ),
+                          ),
+
+                          // Row(
+                          //   children: [
+                          //     Expanded(
+                          //       child: _buildAddToCartButton(
+                          //         product,
+                          //       ), // ✅ শুধু এটা বসবে
+                          //     ),
+                          //     const SizedBox(width: 4),
+                          //     Expanded(
+                          //       child: ElevatedButton(
+                          //         onPressed: () => _buyNow(product),
+                          //         style: ElevatedButton.styleFrom(
+                          //           backgroundColor: Colors.green,
+                          //           foregroundColor: Colors.white,
+                          //           minimumSize: const Size(0, 28),
+                          //           padding: EdgeInsets.zero,
+                          //           shape: RoundedRectangleBorder(
+                          //             borderRadius: BorderRadius.circular(6),
+                          //           ),
+                          //         ),
+                          //         child: const Text(
+                          //           'Buy',
+                          //           style: TextStyle(fontSize: 10),
+                          //         ),
+                          //       ),
+                          //     ),
+                          //   ],
+                          // ),
                         ],
                       ),
                   ],
@@ -1367,73 +1364,73 @@ class _PublicProductListPageState extends State<PublicProductListPage>
                 padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
                 child: Row(
                   children: [
-                    //Expanded(
-                    //   child: OutlinedButton.icon(
-                    //     // onPressed: () => _addToCart(product),
-                    //     onPressed: () => _buildAddToCartButton(product),
-                    //     icon: const Icon(Icons.add_shopping_cart, size: 12),
-                    //     label: const Text(
-                    //       'Cart',
-                    //       style: TextStyle(fontSize: 10),
-                    //     ),
-                    //     style: OutlinedButton.styleFrom(
-                    //       foregroundColor: Colors.orange,
-                    //       side: const BorderSide(color: Colors.orange),
-                    //       minimumSize: const Size(0, 28),
-                    //       padding: EdgeInsets.zero,
-                    //       shape: RoundedRectangleBorder(
-                    //         borderRadius: BorderRadius.circular(6),
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
-                    // const SizedBox(width: 4),
-                    // Expanded(
-                    //   child: ElevatedButton(
-                    //     onPressed: () => _buyNow(product),
-                    //     style: ElevatedButton.styleFrom(
-                    //       backgroundColor: Colors.green,
-                    //       foregroundColor: Colors.white,
-                    //       minimumSize: const Size(0, 28),
-                    //       padding: EdgeInsets.zero,
-                    //       shape: RoundedRectangleBorder(
-                    //         borderRadius: BorderRadius.circular(6),
-                    //       ),
-                    //     ),
-                    //     child: const Text(
-                    //       'Buy',
-                    //       style: TextStyle(fontSize: 10),
-                    //     ),
-                    //   ),
-                    // ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: _buildAddToCartButton(
-                            product,
-                          ), // ✅ শুধু এটা বসবে
+                    Expanded(
+                      child: OutlinedButton.icon(
+                        // onPressed: () => _addToCart(product),
+                        onPressed: () => _addToCart(product),
+                        icon: const Icon(Icons.add_shopping_cart, size: 12),
+                        label: const Text(
+                          'Cart',
+                          style: TextStyle(fontSize: 10),
                         ),
-                        const SizedBox(width: 4),
-                        Expanded(
-                          child: ElevatedButton(
-                            onPressed: () => _buyNow(product),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.green,
-                              foregroundColor: Colors.white,
-                              minimumSize: const Size(0, 28),
-                              padding: EdgeInsets.zero,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(6),
-                              ),
-                            ),
-                            child: const Text(
-                              'Buy',
-                              style: TextStyle(fontSize: 10),
-                            ),
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: Colors.orange,
+                          side: const BorderSide(color: Colors.orange),
+                          minimumSize: const Size(0, 28),
+                          padding: EdgeInsets.zero,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(6),
                           ),
                         ),
-                      ],
+                      ),
                     ),
+                    const SizedBox(width: 4),
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: () => _buyNow(product),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.green,
+                          foregroundColor: Colors.white,
+                          minimumSize: const Size(0, 28),
+                          padding: EdgeInsets.zero,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                        ),
+                        child: const Text(
+                          'Buy',
+                          style: TextStyle(fontSize: 10),
+                        ),
+                      ),
+                    ),
+                    // Row(
+                    //   children: [
+                    //     Expanded(
+                    //       child: _buildAddToCartButton(
+                    //         product,
+                    //       ), // ✅ শুধু এটা বসবে
+                    //     ),
+                    //     const SizedBox(width: 4),
+                    //     Expanded(
+                    //       child: ElevatedButton(
+                    //         onPressed: () => _buyNow(product),
+                    //         style: ElevatedButton.styleFrom(
+                    //           backgroundColor: Colors.green,
+                    //           foregroundColor: Colors.white,
+                    //           minimumSize: const Size(0, 28),
+                    //           padding: EdgeInsets.zero,
+                    //           shape: RoundedRectangleBorder(
+                    //             borderRadius: BorderRadius.circular(6),
+                    //           ),
+                    //         ),
+                    //         child: const Text(
+                    //           'Buy',
+                    //           style: TextStyle(fontSize: 10),
+                    //         ),
+                    //       ),
+                    //     ),
+                    //   ],
+                    // ),
                   ],
                 ),
               ),
@@ -1534,84 +1531,5 @@ class _PublicProductListPageState extends State<PublicProductListPage>
     );
   }
 
-  // Add this to your product card widget
-  Widget _buildAddToCartButton(ProductResponse product) {
-    return Consumer<CartProvider>(
-      builder: (context, cartProvider, child) {
-        return ElevatedButton.icon(
-          onPressed: cartProvider.isLoading
-              ? null
-              : () async {
-                  if (!cartProvider.isAuthenticated) {
-                    _showLoginPrompt(context);
-                    return;
-                  }
-
-                  final success = await cartProvider.addToCart(product);
-                  if (success && context.mounted) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text('${product.name} added to cart'),
-                        backgroundColor: Colors.green,
-                        behavior: SnackBarBehavior.floating,
-                        action: SnackBarAction(
-                          label: 'View Cart',
-                          textColor: Colors.white,
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) => const CartPage(),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                    );
-                  }
-                },
-          icon: cartProvider.isLoading
-              ? const SizedBox(
-                  width: 16,
-                  height: 16,
-                  child: CircularProgressIndicator(strokeWidth: 2),
-                )
-              : const Icon(Icons.add_shopping_cart, size: 16),
-          label: Text(cartProvider.isLoading ? 'Adding...' : 'Add to Cart'),
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.orange,
-            foregroundColor: Colors.white,
-            minimumSize: const Size(0, 32),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(6),
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  void _showLoginPrompt(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Login Required'),
-        content: const Text('Please login to add items to your cart'),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context);
-              // Navigate to login page
-            },
-            child: const Text('Login'),
-          ),
-        ],
-      ),
-    );
-  }
+  
 }

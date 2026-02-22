@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:multivendor_flutter_app/services/auth_service.dart';
 import 'package:multivendor_flutter_app/ui/auth/login_page.dart';
-import 'package:multivendor_flutter_app/ui/user/user_cart/cart_page.dart';
 import 'package:multivendor_flutter_app/ui/user/checkout_page.dart';
 import 'package:multivendor_flutter_app/ui/user/common_widget.dart';
 import 'package:multivendor_flutter_app/ui/user/orders_page.dart';
@@ -26,7 +25,7 @@ class _AdminHomePageState extends State<UserHomePage> {
 
   final pages = [
     ProductPage(),
-    CartPage(),
+    // CartPage(),
     CheckoutPage(),
     OrdersPage(),
     PaymentPage(),
