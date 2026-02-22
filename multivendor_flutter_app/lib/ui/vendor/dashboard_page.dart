@@ -7,11 +7,10 @@ import 'package:multivendor_flutter_app/ui/vendor/common_widget.dart';
 import 'package:multivendor_flutter_app/ui/vendor/earnings_page.dart';
 import 'package:multivendor_flutter_app/ui/vendor/orders_page.dart';
 import 'package:multivendor_flutter_app/ui/vendor/payouts_page.dart';
-import 'package:multivendor_flutter_app/ui/vendor/products_page.dart';
 import 'package:multivendor_flutter_app/ui/vendor/reports_page.dart';
 import 'package:multivendor_flutter_app/ui/vendor/vendor_home.dart';
-import 'package:multivendor_flutter_app/ui/vendor/vendor_page/vendor_form.dart';
 import 'package:multivendor_flutter_app/ui/vendor/vendor_page/vendor_profile.dart';
+import 'package:multivendor_flutter_app/ui/vendor/vendor_product.dart';
 
 class VendorDashboardPage extends StatefulWidget {
   const VendorDashboardPage({super.key});
@@ -29,7 +28,7 @@ class _AdminHomePageState extends State<VendorDashboardPage> {
     VendorHomePage(),
     BrandPage(),
     CategoryPage(),
-    ProductsPage(),
+    VendorProductList(),
     OrdersPage(),
     PayoutsPage(),
     EarningsPage(),

@@ -28,7 +28,7 @@ public class ProductController {
     private final VendorRepository vendorRepository;
 
     // ---------------- CREATE PRODUCT ----------------
-    @PostMapping
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ProductResponseDto> createProduct(
             @RequestPart("product") ProductRequestDto dto,
             @RequestPart(value = "images", required = false) MultipartFile[] images
@@ -57,12 +57,6 @@ public class ProductController {
     ) throws IOException {
         return productService.updateProduct(id, dto, images);
     }
-
-
-
-
-
-
 
 
     // ---------------- GET PRODUCT BY ID ----------------
@@ -141,7 +135,7 @@ public class ProductController {
         return productService.getProductsByBrandDto(brandId);
     }
 
-    @GetMapping("/vendor")
+    @GetMapping("/vendor/{vendorId}")
     public List<ProductResponseDto> getProductsByVendor(@PathVariable Long vendorId) {
         return productService.getProductsByVendorId(vendorId);
     }

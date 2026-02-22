@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:multivendor_flutter_app/models/auth/RegisterRequest.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:multivendor_flutter_app/services/api_config.dart';
@@ -171,5 +172,21 @@ class AuthService {
       await logout();
       return false;
     }
+  }
+
+  Future<int?> getVendorId() async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString(AuthService._tokenKey); // Correct key
+
+    print("Token = $token");
+
+    if (token == null) return null;
+
+    final payload = JwtDecoder.decode(token);
+
+    print("Decoded = $payload");
+    print("VendorId = ${payload['vendorId']}");
+
+    return payload['vendorId'];
   }
 }

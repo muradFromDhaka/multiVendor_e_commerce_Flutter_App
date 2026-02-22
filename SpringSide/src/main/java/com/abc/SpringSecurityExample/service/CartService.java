@@ -2,7 +2,7 @@ package com.abc.SpringSecurityExample.service;
 
 import com.abc.SpringSecurityExample.DTOs.projectDtos.CartDto;
 import com.abc.SpringSecurityExample.DTOs.projectDtos.CartItemRequest;
-import com.abc.SpringSecurityExample.DTOs.projectDtos.ItemDto;
+import com.abc.SpringSecurityExample.DTOs.projectDtos.CartItemResponse;
 import com.abc.SpringSecurityExample.Util.NotFoundException;
 import com.abc.SpringSecurityExample.entity.Cart;
 import com.abc.SpringSecurityExample.entity.CartItem;
@@ -163,8 +163,8 @@ public class CartService {
         cartDto.setCartId(cart.getId());
         cartDto.setTotalAmount(cart.getTotalAmount());
 
-        List<ItemDto> itemDtos = cart.getItems().stream().map(item -> {
-            ItemDto itemDto = new ItemDto();
+        List<CartItemResponse> itemDtos = cart.getItems().stream().map(item -> {
+            CartItemResponse itemDto = new CartItemResponse();
             itemDto.setItemId(item.getId());
             itemDto.setProductId(item.getProduct().getId());
             itemDto.setProductName(item.getProduct().getName());

@@ -14,7 +14,7 @@ class CategoryService {
   Future<List<CategoryResponse>> getAllCategories() async {
     final res = await http.get(
       Uri.parse("${ApiConfig.baseUrl}/categories"),
-      headers: await _authService.headers(auth: true),
+      headers: await _authService.headers(),
     );
 
     _checkError(res);
@@ -28,7 +28,7 @@ class CategoryService {
   Future<List<CategoryResponse>> getRootCategories() async {
     final res = await http.get(
       Uri.parse("${ApiConfig.baseUrl}/categories/root"),
-      headers: await _authService.headers(auth: true),
+      headers: await _authService.headers(),
     );
 
     _checkError(res);
@@ -42,7 +42,7 @@ class CategoryService {
   Future<CategoryResponse> getCategoryById(int id) async {
     final res = await http.get(
       Uri.parse("${ApiConfig.baseUrl}/categories/$id"),
-      headers: await _authService.headers(auth: true),
+      headers: await _authService.headers(),
     );
 
     _checkError(res);
@@ -55,7 +55,7 @@ class CategoryService {
   Future<List<CategoryResponse>> getSubCategories(int id) async {
     final res = await http.get(
       Uri.parse("${ApiConfig.baseUrl}/categories/$id/subcategories"),
-      headers: await _authService.headers(auth: true),
+      headers: await _authService.headers(),
     );
 
     _checkError(res);

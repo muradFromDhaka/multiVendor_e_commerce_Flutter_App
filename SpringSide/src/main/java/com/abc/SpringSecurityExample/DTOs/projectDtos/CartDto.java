@@ -9,7 +9,7 @@ import java.util.List;
 public class CartDto {
 
     private Long cartId;
-    private List<ItemDto> items;
+    private List<CartItemResponse> items;
     private BigDecimal totalAmount;
 
 

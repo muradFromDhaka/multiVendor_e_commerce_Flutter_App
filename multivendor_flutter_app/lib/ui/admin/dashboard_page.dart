@@ -7,8 +7,8 @@ import 'package:multivendor_flutter_app/ui/admin/common_widget.dart';
 import 'package:multivendor_flutter_app/ui/admin/deals_page.dart';
 import 'package:multivendor_flutter_app/ui/admin/inventory_page.dart';
 import 'package:multivendor_flutter_app/ui/admin/orders_page.dart';
-import 'package:multivendor_flutter_app/ui/admin/payouts_page.dart';
-import 'package:multivendor_flutter_app/ui/admin/products_page.dart';
+import 'package:multivendor_flutter_app/ui/admin/payout_page.dart';
+import 'package:multivendor_flutter_app/ui/admin/product/product_List.dart';
 import 'package:multivendor_flutter_app/ui/admin/reports_page.dart';
 import 'package:multivendor_flutter_app/ui/admin/roll_management_page.dart';
 import 'package:multivendor_flutter_app/ui/admin/vendors_page.dart';
@@ -30,9 +30,9 @@ class _AdminHomePageState extends State<AdminDashboardPage> {
     AdminHomePage(),
     BrandList(),
     CategoryList(),
-    ProductsPage(),
+    ProductList(),
     OrdersPage(),
-    PayoutsPage(),
+    PayoutPage(),
     InventoryPage(),
     DealsPage(),
     ReportsPage(),

@@ -143,7 +143,7 @@ class _CategoryListState extends State<CategoryList> {
                             ),
                             child: category.imageUrl != null
                                 ? Image.network(
-                                    "${ApiConfig.imgUrl}/${category.imageUrl!}",
+                                    "${ApiConfig.imgBaseUrl}/${category.imageUrl!}",
                                     fit: BoxFit.cover,
                                   )
                                 : Container(
@@ -171,7 +171,7 @@ class _CategoryListState extends State<CategoryList> {
                               ),
                               if (category.parentName != null)
                                 Text(
-                                  "Parent: ${category.parentName}",
+                                  "A part of ${category.parentName}",
                                   style: TextStyle(
                                     fontSize: 12,
                                     color: Colors.grey[600],

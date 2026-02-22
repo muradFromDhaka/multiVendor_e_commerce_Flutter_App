@@ -24,7 +24,7 @@ class VendorService {
   Future<List<dynamic>> getAllVendors() async {
     final res = await http.get(
       Uri.parse('${ApiConfig.baseUrl}/vendors'),
-      headers: await _authService.headers(auth: true),
+      headers: await _authService.headers(),
     );
 
     _checkError(res);
@@ -37,7 +37,7 @@ class VendorService {
   Future<Map<String, dynamic>> getVendorById(int id) async {
     final res = await http.get(
       Uri.parse("${ApiConfig.baseUrl}/vendors/$id"),
-      headers: await _authService.headers(auth: true),
+      headers: await _authService.headers(),
     );
 
     _checkError(res);

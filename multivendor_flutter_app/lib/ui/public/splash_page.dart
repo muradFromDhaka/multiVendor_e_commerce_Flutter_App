@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:multivendor_flutter_app/services/auth_service.dart';
 import 'package:multivendor_flutter_app/ui/auth/login_page.dart';
 import 'package:multivendor_flutter_app/ui/public/home_page.dart';
+import 'package:multivendor_flutter_app/ui/public/public_product_list.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -35,7 +36,8 @@ class _SplashPageState extends State<SplashPage> {
     } else {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (_) => const LoginPage()),
+        // MaterialPageRoute(builder: (_) => const LoginPage()),
+        MaterialPageRoute(builder: (_) => PublicProductListPage()),
       );
     }
   }
