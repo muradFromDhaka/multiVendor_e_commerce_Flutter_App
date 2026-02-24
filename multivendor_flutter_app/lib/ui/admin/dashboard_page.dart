@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:multivendor_flutter_app/services/auth_service.dart';
-import 'package:multivendor_flutter_app/ui/admin/admin_home.dart';
 import 'package:multivendor_flutter_app/ui/admin/brand/brand_list.dart';
 import 'package:multivendor_flutter_app/ui/admin/category/category_list.dart';
 import 'package:multivendor_flutter_app/ui/admin/common_widget.dart';
@@ -13,6 +12,7 @@ import 'package:multivendor_flutter_app/ui/admin/reports_page.dart';
 import 'package:multivendor_flutter_app/ui/admin/roll_management_page.dart';
 import 'package:multivendor_flutter_app/ui/admin/vendors_page.dart';
 import 'package:multivendor_flutter_app/ui/auth/login_page.dart';
+import 'package:multivendor_flutter_app/ui/public/public_product_list.dart';
 
 class AdminDashboardPage extends StatefulWidget {
   const AdminDashboardPage({super.key});
@@ -27,10 +27,9 @@ class _AdminHomePageState extends State<AdminDashboardPage> {
   final _authService = AuthService();
 
   final pages = [
-    AdminHomePage(),
+    ProductList(),
     BrandList(),
     CategoryList(),
-    ProductList(),
     OrdersPage(),
     PayoutPage(),
     InventoryPage(),
@@ -44,7 +43,7 @@ class _AdminHomePageState extends State<AdminDashboardPage> {
     await _authService.logout();
     Navigator.pushAndRemoveUntil(
       context,
-      MaterialPageRoute(builder: (_) => const LoginPage()),
+      MaterialPageRoute(builder: (_) => const PublicProductListPage()),
       (Route) => false,
     );
   }

@@ -2,8 +2,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:multivendor_flutter_app/services/auth_service.dart';
+import 'package:multivendor_flutter_app/ui/admin/dashboard_page.dart';
 import 'package:multivendor_flutter_app/ui/auth/register_page.dart';
-import 'package:multivendor_flutter_app/ui/public/home_page.dart';
+import 'package:multivendor_flutter_app/ui/user/user_home_page.dart';
+import 'package:multivendor_flutter_app/ui/vendor/dashboard_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -13,6 +15,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
+  final AuthService _authService = AuthService();
+
   // Controllers
   late final TextEditingController _usernameController;
   late final TextEditingController _passwordController;
@@ -23,9 +27,6 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
 
   // Form key for validation
   final _formKey = GlobalKey<FormState>();
-
-  // Service
-  final AuthService _authService = AuthService();
 
   // State variables
   bool _isLoading = false;
@@ -103,19 +104,29 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
           await _saveCredentials();
         }
 
-        // Navigate with fade transition
-        Navigator.pushReplacement(
-          context,
-          PageRouteBuilder(
-            pageBuilder: (context, animation, secondaryAnimation) => HomePage(),
-            // const AdminDashboardPage(),
-            transitionsBuilder:
-                (context, animation, secondaryAnimation, child) {
-                  return FadeTransition(opacity: animation, child: child);
-                },
-            transitionDuration: const Duration(milliseconds: 300),
-          ),
-        );
+        final isAdmin = await _authService.hasRole('ROLE_ADMIN');
+        final isModerator = await _authService.hasRole('ROLE_MODERATOR');
+        final isVendor = await _authService.hasRole('ROLE_VENDOR');
+        final isUser = await _authService.hasRole('ROLE_USER');
+
+        if (isAdmin || isModerator) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (_) => const AdminDashboardPage()),
+          );
+        } else if (isVendor) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (_) => const VendorDashboardPage()),
+          );
+        } else if (isUser) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (_) => const UserHomePage()),
+          );
+        } else {
+          _showErrorSnackBar("No role assigned");
+        }
       } else {
         _showErrorSnackBar('Invalid username or password');
       }

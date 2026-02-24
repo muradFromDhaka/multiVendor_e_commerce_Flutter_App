@@ -292,7 +292,6 @@ class _PublicProductDetailsPageState extends State<PublicProductDetailsPage>
                     _buildHeader(),
                     _buildPriceSection(),
                     _buildDivider(),
-                    _buildQuantitySelector(),
                     _buildDivider(),
                     _buildProductInfo(),
                     _buildDivider(),
@@ -665,101 +664,6 @@ class _PublicProductDetailsPageState extends State<PublicProductDetailsPage>
               ),
             ),
           ],
-        ],
-      ),
-    );
-  }
-
-  Widget _buildQuantitySelector() {
-    final unitPrice = (_product!.discountPrice ?? _product!.price);
-    final totalPrice = unitPrice * _selectedQuantity;
-
-    return Container(
-      margin: const EdgeInsets.all(16),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            'Quantity',
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-          ),
-
-          const SizedBox(height: 12),
-
-          Row(
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey.shade300),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    IconButton(
-                      icon: const Icon(Icons.remove, size: 18),
-                      onPressed: _decrementQuantity,
-                    ),
-                    SizedBox(
-                      width: 35,
-                      child: Text(
-                        '$_selectedQuantity',
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.add, size: 18),
-                      onPressed: _incrementQuantity,
-                    ),
-                  ],
-                ),
-              ),
-
-              const Spacer(),
-
-              if (_product!.stockQuantity != null)
-                Text(
-                  '${_product!.stockQuantity} available',
-                  style: TextStyle(color: Colors.grey.shade600, fontSize: 13),
-                ),
-            ],
-          ),
-
-          const SizedBox(height: 16),
-
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Total Price',
-                style: TextStyle(fontSize: 14, color: Colors.grey.shade600),
-              ),
-              Text(
-                '\$${totalPrice.toStringAsFixed(2)}',
-                style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.red,
-                ),
-              ),
-            ],
-          ),
         ],
       ),
     );

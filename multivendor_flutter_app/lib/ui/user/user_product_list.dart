@@ -21,14 +21,14 @@ import 'package:multivendor_flutter_app/services/api_config.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:shimmer/shimmer.dart';
 
-class PublicProductListPage extends StatefulWidget {
-  const PublicProductListPage({super.key});
+class UserProductListPage extends StatefulWidget {
+  const UserProductListPage({super.key});
 
   @override
-  State<PublicProductListPage> createState() => _PublicProductListPageState();
+  State<UserProductListPage> createState() => _UserProductListPageState();
 }
 
-class _PublicProductListPageState extends State<PublicProductListPage>
+class _UserProductListPageState extends State<UserProductListPage>
     with SingleTickerProviderStateMixin {
   final ProductService _productService = ProductService();
   final CategoryService _categoryService = CategoryService();
@@ -460,10 +460,11 @@ class _PublicProductListPageState extends State<PublicProductListPage>
               snap: true,
               elevation: 2,
               backgroundColor: Colors.white,
+              automaticallyImplyLeading: false,
               title: CompositedTransformTarget(
                 link: _layerLink,
                 child: Container(
-                  height: 45,
+                  height: 55,
                   decoration: BoxDecoration(
                     color: Colors.grey[100],
                     borderRadius: BorderRadius.circular(12),

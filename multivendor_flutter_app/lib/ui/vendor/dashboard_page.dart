@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:multivendor_flutter_app/services/auth_service.dart';
+import 'package:multivendor_flutter_app/ui/admin/category/category_list.dart';
 import 'package:multivendor_flutter_app/ui/auth/login_page.dart';
-import 'package:multivendor_flutter_app/ui/vendor/brand_page.dart';
-import 'package:multivendor_flutter_app/ui/vendor/category_page.dart';
+import 'package:multivendor_flutter_app/ui/public/public_product_list.dart';
 import 'package:multivendor_flutter_app/ui/vendor/common_widget.dart';
 import 'package:multivendor_flutter_app/ui/vendor/earnings_page.dart';
 import 'package:multivendor_flutter_app/ui/vendor/orders_page.dart';
 import 'package:multivendor_flutter_app/ui/vendor/payouts_page.dart';
 import 'package:multivendor_flutter_app/ui/vendor/reports_page.dart';
-import 'package:multivendor_flutter_app/ui/vendor/vendor_home.dart';
 import 'package:multivendor_flutter_app/ui/vendor/vendor_page/vendor_profile.dart';
-import 'package:multivendor_flutter_app/ui/vendor/vendor_product.dart';
+import 'package:multivendor_flutter_app/ui/vendor/vendor_product/product_List.dart';
 
 class VendorDashboardPage extends StatefulWidget {
   const VendorDashboardPage({super.key});
@@ -25,15 +24,12 @@ class _AdminHomePageState extends State<VendorDashboardPage> {
   final _authservice = AuthService();
 
   final pages = [
-    VendorHomePage(),
-    BrandPage(),
-    CategoryPage(),
     VendorProductList(),
+    CategoryList(),
     OrdersPage(),
     PayoutsPage(),
     EarningsPage(),
     ReportsPage(),
-    // VendorForm(),
     VendorProfile(),
   ];
 
@@ -41,7 +37,7 @@ class _AdminHomePageState extends State<VendorDashboardPage> {
     await _authservice.logout();
     Navigator.pushAndRemoveUntil(
       context,
-      MaterialPageRoute(builder: (_) => const LoginPage()),
+      MaterialPageRoute(builder: (_) => const PublicProductListPage()),
       (Route) => false,
     );
   }

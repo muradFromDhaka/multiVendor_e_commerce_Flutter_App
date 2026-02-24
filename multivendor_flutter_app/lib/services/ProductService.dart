@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:multivendor_flutter_app/models/product/product_response.dart';
@@ -103,6 +104,9 @@ class ProductService {
       _url("/products/$id"),
       headers: await _authService.headers(auth: true),
     );
+
+    print("Remove Status: ${res.statusCode}");
+    debugPrint("Remove Body: ${res.body}");
 
     if (res.statusCode != 200) {
       throw Exception("Delete failed: ${res.body}");

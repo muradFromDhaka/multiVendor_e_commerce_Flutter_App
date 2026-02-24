@@ -4,11 +4,11 @@ import 'package:multivendor_flutter_app/services/vendor_service.dart';
 import 'package:multivendor_flutter_app/ui/vendor/vendor_page/vendor_profile.dart';
 
 class VendorForm extends StatefulWidget {
-  final VendorRequest? initialData; // Update এর জন্য
+  final VendorRequest? initialData;
   final int? vendorId;
-  final Function()? onSuccess; // Success callback
+  final VoidCallback? onSuccess;
 
-  const VendorForm({Key? key, this.initialData, this.onSuccess, this.vendorId})
+  const VendorForm({Key? key, this.initialData, this.vendorId, this.onSuccess})
     : super(key: key);
 
   @override
@@ -17,18 +17,17 @@ class VendorForm extends StatefulWidget {
 
 class _VendorFormState extends State<VendorForm> {
   final _formKey = GlobalKey<FormState>();
+  final _vendorService = VendorService();
 
-  late TextEditingController _shopNameController;
-  late TextEditingController _descriptionController;
-  late TextEditingController _emailController;
-  late TextEditingController _phoneController;
-  late TextEditingController _addressController;
-  late TextEditingController _logoController;
-  late TextEditingController _bannerController;
+  late final TextEditingController _shopNameController;
+  late final TextEditingController _descriptionController;
+  late final TextEditingController _emailController;
+  late final TextEditingController _phoneController;
+  late final TextEditingController _addressController;
+  late final TextEditingController _logoController;
+  late final TextEditingController _bannerController;
 
   bool _isLoading = false;
-
-  final VendorService _vendorService = VendorService();
 
   @override
   void initState() {
@@ -69,7 +68,20 @@ class _VendorFormState extends State<VendorForm> {
     super.dispose();
   }
 
-  void _submitForm() async {
+  InputDecoration _decoration(String label) {
+    return InputDecoration(
+      labelText: label,
+      border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
+    );
+  }
+
+  String? _requiredValidator(String? value, String message) {
+    if (value == null || value.trim().isEmpty) return message;
+    return null;
+  }
+
+  Future<void> _submitForm() async {
     if (!_formKey.currentState!.validate()) return;
 
     final vendorRequest = VendorRequest(
@@ -86,87 +98,155 @@ class _VendorFormState extends State<VendorForm> {
 
     try {
       if (widget.initialData == null) {
-        // Create new vendor
         await _vendorService.createVendor(vendorRequest.toJson());
-        Navigator.push(
+
+        if (!mounted) return;
+        Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (_) => VendorProfile()),
+          MaterialPageRoute(builder: (_) => const VendorProfile()),
         );
       } else {
-        // Update vendor: _vendorService.updateVendor(id, ...)
         await _vendorService.updateVendor(
           widget.vendorId!,
           vendorRequest.toJson(),
         );
       }
 
+      if (!mounted) return;
+
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Vendor saved successfully")),
       );
 
-      if (widget.onSuccess != null) widget.onSuccess!();
+      widget.onSuccess?.call();
     } catch (e) {
+      if (!mounted) return;
+
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(SnackBar(content: Text("Error: $e")));
+      ).showSnackBar(SnackBar(content: Text("Something went wrong: $e")));
     } finally {
-      setState(() => _isLoading = false);
+      if (mounted) setState(() => _isLoading = false);
     }
+  }
+
+  Widget _imagePreview(String url) {
+    if (url.isEmpty) return const SizedBox();
+    return Padding(
+      padding: const EdgeInsets.only(top: 8),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(10),
+        child: Image.network(
+          url,
+          height: 80,
+          width: double.infinity,
+          fit: BoxFit.cover,
+          errorBuilder: (_, __, ___) => const Text(
+            "Invalid image URL",
+            style: TextStyle(color: Colors.red),
+          ),
+        ),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
-      child: Form(
-        key: _formKey,
-        child: Column(
-          children: [
-            TextFormField(
-              controller: _shopNameController,
-              decoration: const InputDecoration(labelText: "Shop Name"),
-              validator: (value) => value == null || value.isEmpty
-                  ? "Shop name is required"
-                  : null,
-            ),
-            TextFormField(
-              controller: _descriptionController,
-              decoration: const InputDecoration(labelText: "Description"),
-            ),
-            TextFormField(
-              controller: _emailController,
-              decoration: const InputDecoration(labelText: "Business Email"),
-              keyboardType: TextInputType.emailAddress,
-            ),
-            TextFormField(
-              controller: _phoneController,
-              decoration: const InputDecoration(labelText: "Phone"),
-              keyboardType: TextInputType.phone,
-            ),
-            TextFormField(
-              controller: _addressController,
-              decoration: const InputDecoration(labelText: "Address"),
-            ),
-            TextFormField(
-              controller: _logoController,
-              decoration: const InputDecoration(labelText: "Logo URL"),
-            ),
-            TextFormField(
-              controller: _bannerController,
-              decoration: const InputDecoration(labelText: "Banner URL"),
-            ),
-            const SizedBox(height: 20),
-            _isLoading
-                ? const CircularProgressIndicator()
-                : ElevatedButton(
-                    onPressed: _submitForm,
-                    child: Text(
-                      widget.initialData == null
-                          ? "Create Vendor"
-                          : "Update Vendor",
-                    ),
-                  ),
-          ],
+    return SafeArea(
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.all(16),
+        child: Form(
+          key: _formKey,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(
+                widget.initialData == null ? "Create Vendor" : "Update Vendor",
+                style: Theme.of(context).textTheme.headlineSmall,
+              ),
+              const SizedBox(height: 20),
+
+              TextFormField(
+                controller: _shopNameController,
+                decoration: _decoration("Shop Name"),
+                textInputAction: TextInputAction.next,
+                validator: (v) =>
+                    _requiredValidator(v, "Shop name is required"),
+              ),
+              const SizedBox(height: 12),
+
+              TextFormField(
+                controller: _descriptionController,
+                decoration: _decoration("Description"),
+                maxLines: 3,
+                textInputAction: TextInputAction.next,
+              ),
+              const SizedBox(height: 12),
+
+              TextFormField(
+                controller: _emailController,
+                decoration: _decoration("Business Email"),
+                keyboardType: TextInputType.emailAddress,
+                textInputAction: TextInputAction.next,
+              ),
+              const SizedBox(height: 12),
+
+              TextFormField(
+                controller: _phoneController,
+                decoration: _decoration("Phone"),
+                keyboardType: TextInputType.phone,
+                textInputAction: TextInputAction.next,
+              ),
+              const SizedBox(height: 12),
+
+              TextFormField(
+                controller: _addressController,
+                decoration: _decoration("Address"),
+                maxLines: 2,
+                textInputAction: TextInputAction.next,
+              ),
+              const SizedBox(height: 12),
+
+              TextFormField(
+                controller: _logoController,
+                decoration: _decoration("Logo URL"),
+                textInputAction: TextInputAction.next,
+                onChanged: (_) => setState(() {}),
+              ),
+              _imagePreview(_logoController.text),
+
+              const SizedBox(height: 12),
+
+              TextFormField(
+                controller: _bannerController,
+                decoration: _decoration("Banner URL"),
+                textInputAction: TextInputAction.done,
+                onChanged: (_) => setState(() {}),
+              ),
+              _imagePreview(_bannerController.text),
+
+              const SizedBox(height: 24),
+
+              ElevatedButton(
+                onPressed: _isLoading ? null : _submitForm,
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(vertical: 14),
+                ),
+                child: _isLoading
+                    ? const SizedBox(
+                        height: 18,
+                        width: 18,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      )
+                    : Text(
+                        widget.initialData == null
+                            ? "Create Vendor"
+                            : "Update Vendor",
+                      ),
+              ),
+            ],
+          ),
         ),
       ),
     );
