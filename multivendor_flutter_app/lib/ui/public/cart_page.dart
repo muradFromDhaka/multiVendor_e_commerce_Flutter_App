@@ -5,7 +5,6 @@ import 'package:multivendor_flutter_app/services/api_config.dart';
 import 'package:multivendor_flutter_app/services/cart_service.dart';
 import 'package:multivendor_flutter_app/ui/public/checkout_page.dart';
 import 'package:multivendor_flutter_app/ui/user/user_home_page.dart';
-import 'package:multivendor_flutter_app/ui/user/user_product_list.dart';
 
 class CartPage extends StatefulWidget {
   const CartPage({Key? key}) : super(key: key);
@@ -461,6 +460,31 @@ class _CartPageState extends State<CartPage> with TickerProviderStateMixin {
             const SizedBox(width: 16),
 
             // Product Details
+            // Expanded(
+            //   child: Column(
+            //     crossAxisAlignment: CrossAxisAlignment.start,
+            //     children: [
+            //       Text(
+            //         item.productName,
+            //         style: const TextStyle(
+            //           fontSize: 16,
+            //           fontWeight: FontWeight.w600,
+            //         ),
+            //         maxLines: 2,
+            //         overflow: TextOverflow.ellipsis,
+            //       ),
+            //       const SizedBox(height: 4),
+            //       Text(
+            //         '\$${item.price.toStringAsFixed(2)}',
+            //         style: TextStyle(
+            //           fontSize: 14,
+            //           color: Colors.grey.shade700,
+            //           fontWeight: FontWeight.w500,
+            //         ),
+            //       ),
+            //     ],
+            //   ),
+            // ),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -473,6 +497,12 @@ class _CartPageState extends State<CartPage> with TickerProviderStateMixin {
                     ),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 4),
+                  // ✅ Vendor Name
+                  Text(
+                    "${item.vendorName ?? 'Unknown Vendor'}",
+                    style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
                   ),
                   const SizedBox(height: 4),
                   Text(
@@ -637,13 +667,21 @@ class _CartPageState extends State<CartPage> with TickerProviderStateMixin {
                 onPressed: isPlacingOrder || cart?.items.isEmpty == true
                     ? null
                     : () {
-                        // TODO: Implement checkout
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //     builder: (_) => const CheckoutPage(),
-                        //   ),
-                        // );
+                        // ✅ Vendor validation
+                        for (var item in cart!.items) {
+                          if ((item.vendorId ?? 0) <= 0) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  "Invalid vendor for product ${item.productName}",
+                                ),
+                                backgroundColor: Colors.red.shade600,
+                              ),
+                            );
+                            return; // Stop navigation
+                          }
+                        }
+
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -653,12 +691,12 @@ class _CartPageState extends State<CartPage> with TickerProviderStateMixin {
                                   id: item.productId,
                                   name: item.productName,
                                   price: item.price,
-                                  sku: '', // default empty string
-                                  stockQuantity: 1, // default 1
-                                  vendorId: null, // unknown
-                                  vendorName: null, // unknown
-                                  cartQuantity:
-                                      item.quantity, // frontend quantity
+                                  sku: '',
+                                  stockQuantity: 1,
+                                  vendorId: item.vendorId ?? 0,
+                                  vendorName: item.vendorName,
+                                  cartQuantity: item.quantity,
+                                  cartVendorId: item.vendorId ?? 0,
                                 );
                               }).toList(),
                             ),

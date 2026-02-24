@@ -158,6 +158,36 @@ public class CartService {
     // ===========================================
     // Helper: Map Cart Entity to DTO
     // ===========================================
+//    private CartDto mapCartToDto(Cart cart) {
+//        CartDto cartDto = new CartDto();
+//        cartDto.setCartId(cart.getId());
+//        cartDto.setTotalAmount(cart.getTotalAmount());
+//
+//        List<ItemDto> itemDtos = cart.getItems().stream().map(item -> {
+//            ItemDto itemDto = new ItemDto();
+//            itemDto.setItemId(item.getId());
+//            itemDto.setProductId(item.getProduct().getId());
+//            itemDto.setProductName(item.getProduct().getName());
+//            itemDto.setQuantity(item.getQuantity());
+//            itemDto.setPrice(item.getPrice());
+//            itemDto.setTotal(item.getTotalPrice());
+//
+//            try {
+//                List<String> images = item.getProduct().getImageUrls();
+//                if (images != null && !images.isEmpty()) {
+//                    itemDto.setImageUrl(images.get(0));
+//                }
+//            } catch (Exception e) {
+//                System.out.println("Error accessing image: " + e.getMessage());
+//            }
+//
+//            return itemDto;
+//        }).collect(Collectors.toList());
+//
+//        cartDto.setItems(itemDtos);
+//        return cartDto;
+//    }
+
     private CartDto mapCartToDto(Cart cart) {
         CartDto cartDto = new CartDto();
         cartDto.setCartId(cart.getId());
@@ -172,6 +202,7 @@ public class CartService {
             itemDto.setPrice(item.getPrice());
             itemDto.setTotal(item.getTotalPrice());
 
+            // ---------------- Images ----------------
             try {
                 List<String> images = item.getProduct().getImageUrls();
                 if (images != null && !images.isEmpty()) {
@@ -179,6 +210,15 @@ public class CartService {
                 }
             } catch (Exception e) {
                 System.out.println("Error accessing image: " + e.getMessage());
+            }
+
+            // ---------------- Vendor Info ----------------
+            if (item.getProduct().getVendor() != null) {
+                itemDto.setVendorId(item.getProduct().getVendor().getId().intValue());
+                itemDto.setVendorName(item.getProduct().getVendor().getShopName());
+            } else {
+                itemDto.setVendorId(0); // fallback
+                itemDto.setVendorName("Unknown");
             }
 
             return itemDto;

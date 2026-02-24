@@ -13,5 +13,8 @@ public class ItemDto {
     private BigDecimal price;
     private BigDecimal total; // Total price for this item (quantity * price)
     private String imageUrl;
+
+    private Integer vendorId;
+    private String vendorName;
 }
 

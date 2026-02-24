@@ -75,6 +75,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
 
       Navigator.pop(context, true); // Return to previous screen
     } catch (e) {
+      print("Order submission error:----------------- $e");
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(SnackBar(content: Text("Error: $e")));

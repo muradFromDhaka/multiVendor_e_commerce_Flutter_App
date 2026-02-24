@@ -10,8 +10,11 @@ class OrderService {
 
   Future<Order> createOrder(OrderRequest request) async {
     final token = await _authService.getToken();
+    print(
+      "Creating order with token:---------------------------- $token and request: ${request.toJson()}",
+    );
     final res = await http.post(
-      Uri.parse("${ApiConfig.baseUrl}/api/orders"),
+      Uri.parse("${ApiConfig.baseUrl}/orders"),
       headers: {
         "Content-Type": "application/json",
         "Authorization": "Bearer $token",
@@ -29,7 +32,7 @@ class OrderService {
   Future<List<Order>> getMyOrders() async {
     final token = await _authService.getToken();
     final res = await http.get(
-      Uri.parse("${ApiConfig.baseUrl}/api/orders/me"),
+      Uri.parse("${ApiConfig.baseUrl}/orders/me"),
       headers: {"Authorization": "Bearer $token"},
     );
 
