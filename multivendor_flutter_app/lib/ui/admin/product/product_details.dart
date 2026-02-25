@@ -5,7 +5,6 @@ import 'package:multivendor_flutter_app/services/ProductService.dart';
 import 'package:multivendor_flutter_app/services/api_config.dart';
 import 'package:multivendor_flutter_app/ui/admin/product/image_zoom.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:multivendor_flutter_app/ui/admin/product/test_product_form.dart';
 import 'product_form.dart';
 
 class ProductDetail extends StatefulWidget {

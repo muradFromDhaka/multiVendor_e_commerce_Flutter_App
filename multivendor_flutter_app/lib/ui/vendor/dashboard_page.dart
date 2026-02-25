@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:multivendor_flutter_app/services/auth_service.dart';
 import 'package:multivendor_flutter_app/ui/admin/category/category_list.dart';
-import 'package:multivendor_flutter_app/ui/auth/login_page.dart';
 import 'package:multivendor_flutter_app/ui/public/public_product_list.dart';
 import 'package:multivendor_flutter_app/ui/vendor/common_widget.dart';
 import 'package:multivendor_flutter_app/ui/vendor/earnings_page.dart';
-import 'package:multivendor_flutter_app/ui/vendor/orders_page.dart';
+import 'package:multivendor_flutter_app/ui/vendor/vendor_orders_page.dart';
 import 'package:multivendor_flutter_app/ui/vendor/payouts_page.dart';
 import 'package:multivendor_flutter_app/ui/vendor/reports_page.dart';
 import 'package:multivendor_flutter_app/ui/vendor/vendor_page/vendor_profile.dart';
 import 'package:multivendor_flutter_app/ui/vendor/vendor_product/product_List.dart';
+import 'package:multivendor_flutter_app/ui/vendor/vendor_revenue_page.dart';
 
 class VendorDashboardPage extends StatefulWidget {
   const VendorDashboardPage({super.key});
@@ -26,9 +26,10 @@ class _AdminHomePageState extends State<VendorDashboardPage> {
   final pages = [
     VendorProductList(),
     CategoryList(),
-    OrdersPage(),
-    PayoutsPage(),
-    EarningsPage(),
+    VendorOrdersPage(),
+    VendorPayoutPage(),
+    VendorEarningsPage(),
+    VendorRevenuePage(),
     ReportsPage(),
     VendorProfile(),
   ];

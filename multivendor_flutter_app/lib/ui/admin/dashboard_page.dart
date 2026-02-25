@@ -11,7 +11,6 @@ import 'package:multivendor_flutter_app/ui/admin/product/product_List.dart';
 import 'package:multivendor_flutter_app/ui/admin/reports_page.dart';
 import 'package:multivendor_flutter_app/ui/admin/roll_management_page.dart';
 import 'package:multivendor_flutter_app/ui/admin/vendors_page.dart';
-import 'package:multivendor_flutter_app/ui/auth/login_page.dart';
 import 'package:multivendor_flutter_app/ui/public/public_product_list.dart';
 
 class AdminDashboardPage extends StatefulWidget {

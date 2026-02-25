@@ -228,6 +228,23 @@ class ProductService {
     }
   }
 
+  // ✅ New method: Get products by vendor
+  Future<List<ProductResponse>> getProductsByVendor(int vendorId) async {
+    final url = Uri.parse('${ApiConfig.baseUrl}/products/vendor/$vendorId');
+    final response = await http.get(url, headers: await _authService.headers());
+
+    print(
+      'Vendor products response: ${response.statusCode}, body: ${response.body}',
+    );
+
+    if (response.statusCode == 200) {
+      final List data = json.decode(response.body);
+      return data.map((e) => ProductResponse.fromJson(e)).toList();
+    } else {
+      throw Exception('Failed to fetch products for vendor $vendorId');
+    }
+  }
+
   Future<List<ProductResponse>> getMyProducts() async {
     final res = await http.get(
       _url("/products/my/product"),

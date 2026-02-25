@@ -1,4 +1,50 @@
-// services/order_service.dart
+// // services/order_service.dart
+// import 'dart:convert';
+// import 'package:http/http.dart' as http;
+// import 'package:multivendor_flutter_app/models/order.dart';
+// import 'package:multivendor_flutter_app/services/api_config.dart';
+// import 'auth_service.dart';
+
+// class OrderService {
+//   final AuthService _authService = AuthService();
+
+//   Future<OrderResponse> createOrder(OrderRequest request) async {
+//     final token = await _authService.getToken();
+//     print(
+//       "Creating order with token:---------------------------- $token and request: ${request.toJson()}",
+//     );
+//     final res = await http.post(
+//       Uri.parse("${ApiConfig.baseUrl}/orders"),
+//       headers: {
+//         "Content-Type": "application/json",
+//         "Authorization": "Bearer $token",
+//       },
+//       body: jsonEncode(request.toJson()),
+//     );
+
+//     if (res.statusCode == 200) {
+//       return OrderResponse.fromJson(jsonDecode(res.body));
+//     } else {
+//       throw Exception("Order creation failed: ${res.body}");
+//     }
+//   }
+
+//   Future<List<OrderResponse>> getMyOrders() async {
+//     final token = await _authService.getToken();
+//     final res = await http.get(
+//       Uri.parse("${ApiConfig.baseUrl}/orders/me"),
+//       headers: {"Authorization": "Bearer $token"},
+//     );
+
+//     if (res.statusCode == 200) {
+//       final List data = jsonDecode(res.body);
+//       return data.map((e) => OrderResponse.fromJson(e)).toList();
+//     } else {
+//       throw Exception("Failed to fetch orders: ${res.body}");
+//     }
+//   }
+// }
+
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:multivendor_flutter_app/models/order.dart';
@@ -8,39 +54,70 @@ import 'auth_service.dart';
 class OrderService {
   final AuthService _authService = AuthService();
 
-  Future<Order> createOrder(OrderRequest request) async {
+  Future<Map<String, String>> _headers() async {
     final token = await _authService.getToken();
-    print(
-      "Creating order with token:---------------------------- $token and request: ${request.toJson()}",
-    );
+    return {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer $token",
+    };
+  }
+
+  // ✅ Create Order
+  Future<OrderResponse> createOrder(OrderRequest request) async {
     final res = await http.post(
       Uri.parse("${ApiConfig.baseUrl}/orders"),
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": "Bearer $token",
-      },
+      headers: await _headers(),
       body: jsonEncode(request.toJson()),
     );
 
     if (res.statusCode == 200) {
-      return Order.fromJson(jsonDecode(res.body));
+      return OrderResponse.fromJson(jsonDecode(res.body));
     } else {
-      throw Exception("Order creation failed: ${res.body}");
+      throw Exception(jsonDecode(res.body).toString());
     }
   }
 
-  Future<List<Order>> getMyOrders() async {
-    final token = await _authService.getToken();
+  // ✅ User নিজের orders
+  Future<List<OrderResponse>> getMyOrders() async {
     final res = await http.get(
       Uri.parse("${ApiConfig.baseUrl}/orders/me"),
-      headers: {"Authorization": "Bearer $token"},
+      headers: await _headers(),
     );
 
     if (res.statusCode == 200) {
       final List data = jsonDecode(res.body);
-      return data.map((e) => Order.fromJson(e)).toList();
+      return data.map((e) => OrderResponse.fromJson(e)).toList();
     } else {
-      throw Exception("Failed to fetch orders: ${res.body}");
+      throw Exception(res.body);
+    }
+  }
+
+  // ✅ Vendor নিজের orders
+  Future<List<OrderResponse>> getVendorOrders() async {
+    final res = await http.get(
+      Uri.parse("${ApiConfig.baseUrl}/orders/vendor/me"),
+      headers: await _headers(),
+    );
+
+    if (res.statusCode == 200) {
+      final List data = jsonDecode(res.body);
+      return data.map((e) => OrderResponse.fromJson(e)).toList();
+    } else {
+      throw Exception(res.body);
+    }
+  }
+
+  // ✅ Vendor revenue
+  Future<double> getVendorRevenue() async {
+    final res = await http.get(
+      Uri.parse("${ApiConfig.baseUrl}/orders/vendor/me/revenue"),
+      headers: await _headers(),
+    );
+
+    if (res.statusCode == 200) {
+      return (jsonDecode(res.body) as num).toDouble();
+    } else {
+      throw Exception(res.body);
     }
   }
 }

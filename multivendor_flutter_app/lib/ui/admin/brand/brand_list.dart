@@ -103,16 +103,12 @@ class _BrandListState extends State<BrandList> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Brands"),
+        title: const Text("Brands page"),
+        automaticallyImplyLeading: false,
         actions: [
           IconButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => BrandForm()),
-              );
-            },
-            icon: Text("Brand Add"),
+            onPressed: () => _openForm(),
+            icon: Row(children: [Icon(Icons.add), Text("Add Brand")]),
           ),
           IconButton(icon: const Icon(Icons.refresh), onPressed: _loadBrands),
         ],
@@ -196,7 +192,7 @@ class _BrandCard extends StatelessWidget {
           CircleAvatar(
             radius: 28,
             backgroundImage: brand.logoUrl != null
-                ? NetworkImage("${ApiConfig.baseUrl}/${brand.logoUrl!}")
+                ? NetworkImage("${ApiConfig.imgBaseUrl}/${brand.logoUrl!}")
                 : null,
             child: brand.logoUrl == null
                 ? const Icon(Icons.image_not_supported)

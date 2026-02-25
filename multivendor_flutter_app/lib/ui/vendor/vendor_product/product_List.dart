@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:multivendor_flutter_app/models/product/product_response.dart';
 import 'package:multivendor_flutter_app/services/ProductService.dart';
 import 'package:multivendor_flutter_app/ui/admin/product/product_details.dart';
-import 'package:multivendor_flutter_app/ui/admin/product/product_form.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:multivendor_flutter_app/services/api_config.dart';
 import 'package:multivendor_flutter_app/ui/vendor/vendor_product/product_form.dart';

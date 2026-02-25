@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:multivendor_flutter_app/models/vendor/vendor_response.dart';
+import 'package:multivendor_flutter_app/services/ProductService.dart';
 import 'package:multivendor_flutter_app/services/vendor_service.dart';
+import 'package:multivendor_flutter_app/services/order_service.dart';
+import 'package:multivendor_flutter_app/ui/vendor/vendor_orders_page.dart';
+import 'package:multivendor_flutter_app/ui/vendor/vendor_product/product_List.dart';
 
 class VendorProfile extends StatefulWidget {
   final int? vendorId;
@@ -14,11 +18,16 @@ class VendorProfile extends StatefulWidget {
 
 class _VendorProfilePageState extends State<VendorProfile> {
   final VendorService _vendorService = VendorService();
+  final OrderService _orderService = OrderService();
+  final ProductService _productService = ProductService();
 
   bool _isLoading = true;
   bool _isMyProfile = false;
   VendorResponse? _vendor;
   String? _errorMessage;
+
+  int _totalOrders = 0;
+  int _totalProducts = 0;
 
   @override
   void initState() {
@@ -43,8 +52,18 @@ class _VendorProfilePageState extends State<VendorProfile> {
         _isMyProfile = true;
       }
 
+      _vendor = VendorResponse.fromJson(vendorData);
+
+      // Fetch stats for my profile
+      if (_isMyProfile) {
+        final orders = await _orderService.getVendorOrders();
+        final products = await _productService.getMyProducts();
+
+        _totalOrders = orders.length;
+        _totalProducts = products.length;
+      }
+
       setState(() {
-        _vendor = VendorResponse.fromJson(vendorData);
         _isLoading = false;
       });
     } catch (e) {
@@ -225,8 +244,8 @@ class _VendorProfilePageState extends State<VendorProfile> {
               _vendor?.rating?.toStringAsFixed(1) ?? "0.0",
               "Rating",
             ),
-            _statItem(Icons.shopping_bag, "0", "Orders"),
-            _statItem(Icons.inventory, "0", "Products"),
+            _statItem(Icons.shopping_bag, _totalOrders.toString(), "Orders"),
+            _statItem(Icons.inventory, _totalProducts.toString(), "Products"),
           ],
         ),
       ],
@@ -276,13 +295,29 @@ class _VendorProfilePageState extends State<VendorProfile> {
   }
 
   Widget _statItem(IconData icon, String value, String label) {
-    return Column(
-      children: [
-        Icon(icon),
-        const SizedBox(height: 6),
-        Text(value, style: const TextStyle(fontWeight: FontWeight.bold)),
-        Text(label, style: const TextStyle(fontSize: 12)),
-      ],
+    return GestureDetector(
+      child: Column(
+        children: [
+          Icon(icon),
+          const SizedBox(height: 6),
+          Text(value, style: const TextStyle(fontWeight: FontWeight.bold)),
+          Text(label, style: const TextStyle(fontSize: 12)),
+        ],
+      ),
+      onTap: () {
+        if (label == "Orders") {
+          // Navigate to Vendor Orders Page
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => const VendorOrdersPage()),
+          );
+        } else if (label == "Products") {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => VendorProductList()),
+          );
+        }
+      },
     );
   }
 

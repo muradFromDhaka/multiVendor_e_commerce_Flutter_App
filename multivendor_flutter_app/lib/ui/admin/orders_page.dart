@@ -5,6 +5,6 @@ class OrdersPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: Center(child: Text("Orders page.........")));
+    return Scaffold(body: Center(child: Text("Admin Orders page.........")));
   }
 }

@@ -16,6 +16,8 @@ public class OrderItemResponseDTO {
     private BigDecimal unitPrice;
     private int quantity;
     private BigDecimal subTotal; // unitPrice * quantity
+
+    private Long vendorId;
     private String vendorName;
 
 

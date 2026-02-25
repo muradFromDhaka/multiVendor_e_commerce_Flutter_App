@@ -10,9 +10,12 @@ import 'package:multivendor_flutter_app/services/category_service.dart';
 import 'package:multivendor_flutter_app/services/vendor_service.dart';
 import 'package:multivendor_flutter_app/ui/auth/login_page.dart';
 import 'package:multivendor_flutter_app/ui/public/cart_page.dart';
+import 'package:multivendor_flutter_app/ui/public/checkout_page.dart';
+import 'package:multivendor_flutter_app/ui/public/public_category_page.dart';
 import 'package:multivendor_flutter_app/ui/public/public_drawer.dart';
 import 'package:multivendor_flutter_app/ui/public/public_product_details.dart';
 import 'package:multivendor_flutter_app/ui/public/public_productsearch_results.dart';
+import 'package:multivendor_flutter_app/ui/public/public_vendorproduct.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:multivendor_flutter_app/models/product/product_response.dart';
 import 'package:multivendor_flutter_app/models/category/category_response.dart';
@@ -417,16 +420,36 @@ class _PublicProductListPageState extends State<PublicProductListPage>
     }
   }
 
+  // Buy Now → go to checkout page for this product
   void _buyNow(ProductResponse product) {
-    _showSnackBar('Processing order for ${product.name}');
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => CheckoutPage(cartItems: [product])),
+    );
   }
 
+  // Navigate to category → show category products
   void _navigateToCategory(int categoryId, String categoryName) {
-    _showSnackBar('Showing $categoryName products');
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => CategoryProductsPage(
+          categoryId: categoryId,
+          categoryName: categoryName,
+        ),
+      ),
+    );
   }
 
+  // Navigate to vendor → show vendor products page
   void _navigateToVendor(int vendorId, String vendorName) {
-    _showSnackBar('Showing products from $vendorName');
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) =>
+            PublicVendorProductList(vendorId: vendorId, vendorName: vendorName),
+      ),
+    );
   }
 
   @override

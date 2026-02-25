@@ -14,6 +14,7 @@ import 'package:multivendor_flutter_app/services/category_service.dart';
 import 'package:multivendor_flutter_app/services/vendor_service.dart';
 import 'package:multivendor_flutter_app/services/auth_service.dart';
 import 'package:multivendor_flutter_app/services/api_config.dart';
+import 'package:multivendor_flutter_app/ui/admin/dashboard_page.dart';
 import 'package:multivendor_flutter_app/ui/admin/product/product_List.dart';
 
 class ProductForm extends StatefulWidget {
@@ -281,7 +282,7 @@ class _ProductFormState extends State<ProductForm> {
       if (!mounted) return;
 
       // Navigator.pop(context, true);
-      Navigator.push(context, MaterialPageRoute(builder: (_) => ProductList()));
+      Navigator.push(context, MaterialPageRoute(builder: (_) => AdminDashboardPage()));
     } catch (e) {
       _showError(e.toString());
     } finally {

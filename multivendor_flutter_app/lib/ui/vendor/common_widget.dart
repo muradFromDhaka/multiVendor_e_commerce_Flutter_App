@@ -49,6 +49,7 @@ class CommonAdminDrawer extends StatelessWidget {
       {'icon': Icons.branding_watermark, 'title': 'Orders'},
       {'icon': Icons.dashboard_outlined, 'title': 'Payout'},
       {'icon': Icons.inventory_2_outlined, 'title': 'Earnings'},
+      {'icon': Icons.attractions, 'title': 'Revenue'},
       {'icon': Icons.settings_outlined, 'title': 'Repors'},
       {'icon': Icons.dashboard_outlined, 'title': 'Vendors Profile'},
     ];

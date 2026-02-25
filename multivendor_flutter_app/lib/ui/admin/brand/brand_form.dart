@@ -138,7 +138,7 @@ class _BrandFormState extends State<BrandForm> {
     } else if (widget.brand?.logoUrl != null &&
         widget.brand!.logoUrl!.isNotEmpty) {
       imageProvider = NetworkImage(
-        "${ApiConfig.baseUrl}/${widget.brand!.logoUrl!}",
+        "${ApiConfig.imgBaseUrl}/${widget.brand!.logoUrl!}",
       );
     }
 
