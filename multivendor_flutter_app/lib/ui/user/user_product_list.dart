@@ -13,6 +13,7 @@ import 'package:multivendor_flutter_app/ui/public/cart_page.dart';
 import 'package:multivendor_flutter_app/ui/public/public_drawer.dart';
 import 'package:multivendor_flutter_app/ui/public/public_product_details.dart';
 import 'package:multivendor_flutter_app/ui/public/public_productsearch_results.dart';
+import 'package:multivendor_flutter_app/ui/public/public_vendorproduct.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:multivendor_flutter_app/models/product/product_response.dart';
 import 'package:multivendor_flutter_app/models/category/category_response.dart';
@@ -425,8 +426,17 @@ class _UserProductListPageState extends State<UserProductListPage>
     _showSnackBar('Showing $categoryName products');
   }
 
-  void _navigateToVendor(int vendorId, String vendorName) {
-    _showSnackBar('Showing products from $vendorName');
+  void _navigateToVendor(int vendorId, String vendorName, String? logoUrl) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => PublicVendorProductList(
+          vendorId: vendorId,
+          vendorName: vendorName,
+          vendorImage: logoUrl,
+        ),
+      ),
+    );
   }
 
   @override
@@ -912,8 +922,11 @@ class _UserProductListPageState extends State<UserProductListPage>
         itemBuilder: (context, index) {
           final vendor = _vendors[index];
           return InkWell(
-            onTap: () =>
-                _navigateToVendor(vendor['id'], vendor['shopName'] ?? 'Vendor'),
+            onTap: () => _navigateToVendor(
+              vendor['id'],
+              vendor['shopName'] ?? 'Vendor',
+              vendor['logo'],
+            ),
             child: Container(
               width: 80,
               decoration: BoxDecoration(
@@ -1010,8 +1023,11 @@ class _UserProductListPageState extends State<UserProductListPage>
           _buildSectionHeader(
             title: vendor['shopName'] ?? 'Vendor Shop',
             subtitle: '${products.length} products available',
-            onViewAll: () =>
-                _navigateToVendor(vendorId, vendor['shopName'] ?? 'Vendor'),
+            onViewAll: () => _navigateToVendor(
+              vendorId,
+              vendor['shopName'] ?? 'Vendor',
+              vendor['logo'],
+            ),
           ),
           const SizedBox(height: 12),
           _buildProductHorizontalList(products),

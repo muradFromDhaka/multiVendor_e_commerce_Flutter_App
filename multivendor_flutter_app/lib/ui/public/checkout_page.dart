@@ -3,7 +3,7 @@ import 'package:multivendor_flutter_app/models/order.dart';
 import 'package:multivendor_flutter_app/models/product/product_response.dart';
 import 'package:multivendor_flutter_app/services/order_service.dart';
 import 'package:multivendor_flutter_app/services/auth_service.dart';
-import 'package:multivendor_flutter_app/ui/user/orders_page.dart';
+import 'package:multivendor_flutter_app/ui/user/user_home_page.dart';
 
 class CheckoutPage extends StatefulWidget {
   final List<ProductResponse> cartItems;
@@ -26,9 +26,9 @@ class _CheckoutPageState extends State<CheckoutPage> {
   bool _isSubmitting = false;
 
   double get totalPrice => widget.cartItems.fold(
-        0,
-        (sum, item) => sum + (item.price * item.cartQuantity),
-      );
+    0,
+    (sum, item) => sum + (item.price * item.cartQuantity),
+  );
 
   @override
   void dispose() {
@@ -48,9 +48,9 @@ class _CheckoutPageState extends State<CheckoutPage> {
       final userName = user?['userName'];
 
       if (userName == null || userName.isEmpty) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("User not logged in")),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text("User not logged in")));
         return;
       }
 
@@ -62,10 +62,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
         );
       }).toList();
 
-      final request = OrderRequest(
-        userName: userName,
-        items: items,
-      );
+      final request = OrderRequest(userName: userName, items: items);
 
       await _orderService.createOrder(request);
 
@@ -75,18 +72,17 @@ class _CheckoutPageState extends State<CheckoutPage> {
         const SnackBar(content: Text("Order placed successfully")),
       );
 
-      // ✅ Prevent backstack সমস্যা
       Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (_) => const OrdersPage()),
+        MaterialPageRoute(builder: (_) => UserHomePage()),
         (route) => false,
       );
     } catch (e) {
       if (!mounted) return;
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Order failed: ${e.toString()}")),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("Order failed: ${e.toString()}")));
     } finally {
       if (mounted) {
         setState(() => _isSubmitting = false);
@@ -150,8 +146,10 @@ class _CheckoutPageState extends State<CheckoutPage> {
 
                     const Text(
                       "Cart Summary",
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     const Divider(),
 
@@ -207,7 +205,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                         )
                       : const Text("Place Order"),
                 ),
-              )
+              ),
             ],
           ),
         ),

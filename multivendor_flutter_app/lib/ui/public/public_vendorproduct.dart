@@ -372,12 +372,20 @@
 //   }
 // }
 
+// =========================================================================================
+
 import 'package:flutter/material.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:multivendor_flutter_app/core/network/api_exceptions.dart';
+import 'package:multivendor_flutter_app/models/cart.dart';
 import 'package:multivendor_flutter_app/models/product/product_response.dart';
 import 'package:multivendor_flutter_app/services/ProductService.dart';
+import 'package:multivendor_flutter_app/services/auth_service.dart';
+import 'package:multivendor_flutter_app/services/cart_service.dart';
 import 'package:multivendor_flutter_app/ui/admin/product/product_details.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:multivendor_flutter_app/services/api_config.dart';
+import 'package:multivendor_flutter_app/ui/auth/login_page.dart';
 import 'package:multivendor_flutter_app/ui/public/checkout_page.dart';
 import 'package:intl/intl.dart';
 import 'package:multivendor_flutter_app/ui/public/public_product_details.dart';
@@ -401,9 +409,12 @@ class PublicVendorProductList extends StatefulWidget {
 
 class _PublicVendorProductListState extends State<PublicVendorProductList> {
   final ProductService _productService = ProductService();
+  final CartService _cartService = CartService();
+  final AuthService _authService = AuthService();
   bool _isLoading = true;
   List<ProductResponse> _products = [];
   List<ProductResponse> _filteredProducts = [];
+  CartDto? cart;
   String? _errorMessage;
   String _searchQuery = '';
   String _selectedCategory = 'All';
@@ -506,22 +517,21 @@ class _PublicVendorProductListState extends State<PublicVendorProductList> {
 
       if (!mounted) return;
 
-      // final filteredProducts = products
-      //     .where((p) => p.deleted != true && (p.isActive ?? true))
-      //     .toList();
+      final filteredProducts = products
+          .where((p) => p.deleted != true)
+          .toList();
 
-      // Extract categories
-      // final categories = {'All'};
-      // for (var product in filteredProducts) {
-      //   if (product.categoryName != null) {
-      //     categories.add(product.categoryName!);
-      //   }
-      // }
+      final categories = {'All'};
+      for (var product in filteredProducts) {
+        if (product.categoryName != null) {
+          categories.add(product.categoryName!);
+        }
+      }
 
       setState(() {
-        // _products = filteredProducts;
-        // _filteredProducts = filteredProducts;
-        // _categories = categories;
+        _products = filteredProducts;
+        _filteredProducts = filteredProducts;
+        _categories = categories;
         _isLoading = false;
       });
 
@@ -561,6 +571,49 @@ class _PublicVendorProductListState extends State<PublicVendorProductList> {
     }
     return ((product.price - product.discountPrice!) / product.price * 100)
         .roundToDouble();
+  }
+
+  Future<void> _addToCart(ProductResponse product) async {
+    try {
+      final token = await _authService.getToken();
+      if (token != null) {
+        final payload = JwtDecoder.decode(token);
+        print('JWT Payload: $payload');
+      }
+
+      final isLoggedIn = await _authService.isLoggedIn();
+      if (!isLoggedIn) {
+        // Redirect to login if not logged in
+        if (!mounted) return;
+        Navigator.push(context, MaterialPageRoute(builder: (_) => LoginPage()));
+        return;
+      }
+
+      final updatedCart = await _cartService.addItem(
+        CartItemRequest(productId: product.id, quantity: 1),
+      );
+
+      if (!mounted) return;
+      setState(() {
+        cart = updatedCart;
+      });
+
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('${product.name} added to cart')));
+    } on UnauthorizedException {
+      if (!mounted) return;
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (_) => LoginPage()),
+        (route) => false,
+      );
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Failed to add ${product.name}')));
+    }
   }
 
   Widget _buildProductCard(ProductResponse product) {
@@ -813,18 +866,19 @@ class _PublicVendorProductListState extends State<PublicVendorProductList> {
                         onPressed: isInStock
                             ? () {
                                 // TODO: Add to cart logic
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text(
-                                      '${product.name} added to cart',
-                                    ),
-                                    backgroundColor: Colors.deepPurple,
-                                    behavior: SnackBarBehavior.floating,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                  ),
-                                );
+                                // ScaffoldMessenger.of(context).showSnackBar(
+                                //   SnackBar(
+                                //     content: Text(
+                                //       '${product.name} added to cart',
+                                //     ),
+                                //     backgroundColor: Colors.deepPurple,
+                                //     behavior: SnackBarBehavior.floating,
+                                //     shape: RoundedRectangleBorder(
+                                //       borderRadius: BorderRadius.circular(10),
+                                //     ),
+                                //   ),
+                                // );
+                                _addToCart(product);
                               }
                             : null,
                         style: ElevatedButton.styleFrom(
@@ -1424,7 +1478,7 @@ class _PublicVendorProductListState extends State<PublicVendorProductList> {
                           crossAxisCount: 2,
                           crossAxisSpacing: 16,
                           mainAxisSpacing: 16,
-                          childAspectRatio: 0.65,
+                          childAspectRatio: 0.45,
                         ),
                     delegate: SliverChildBuilderDelegate(
                       (context, index) =>

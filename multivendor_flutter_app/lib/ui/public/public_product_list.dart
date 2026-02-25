@@ -374,9 +374,7 @@ class _PublicProductListPageState extends State<PublicProductListPage>
     );
   }
 
-  // void _addToCart(ProductResponse product) {
-  //   _showSnackBar('${product.name} added to cart');
-  // }
+  
   Future<void> _addToCart(ProductResponse product) async {
     try {
       final token = await _authService.getToken();
