@@ -374,7 +374,6 @@ class _PublicProductListPageState extends State<PublicProductListPage>
     );
   }
 
-  
   Future<void> _addToCart(ProductResponse product) async {
     try {
       final token = await _authService.getToken();
@@ -427,16 +426,8 @@ class _PublicProductListPageState extends State<PublicProductListPage>
   }
 
   // Navigate to category → show category products
-  void _navigateToCategory(int categoryId, String categoryName) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (_) => CategoryProductsPage(
-          categoryId: categoryId,
-          categoryName: categoryName,
-        ),
-      ),
-    );
+  void _navigateToCategory(int? categoryId, String categoryName) {
+    _showSnackBar('Showing $categoryName products');
   }
 
   // Navigate to vendor → show vendor products page
@@ -798,8 +789,24 @@ class _PublicProductListPageState extends State<PublicProductListPage>
       itemCount: _categories.length > 8 ? 8 : _categories.length,
       itemBuilder: (context, index) {
         final category = _categories[index];
+
         return InkWell(
-          onTap: () => _navigateToCategory(category.id, category.name),
+          onTap: () {
+            try {
+              print("Tapped Category → ${category.name}, id: ${category.id}");
+              if (category.id != null) {
+                _navigateToCategory(category.id!, category.name);
+              } else {
+                print("Category ID NULL → ${category.name}");
+              }
+            } catch (e, st) {
+              debugPrint('Navigation error: $e');
+              debugPrint('$st');
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('Failed to open category')),
+              );
+            }
+          },
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [

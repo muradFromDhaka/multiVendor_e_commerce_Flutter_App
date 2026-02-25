@@ -5,6 +5,7 @@ import 'package:multivendor_flutter_app/services/ProductService.dart';
 import 'package:multivendor_flutter_app/services/api_config.dart';
 import 'package:multivendor_flutter_app/ui/admin/product/image_zoom.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:multivendor_flutter_app/ui/vendor/vendor_page/vendor_profile.dart';
 import 'package:multivendor_flutter_app/ui/vendor/vendor_product/product_form.dart';
 
 class VendorProductDetail extends StatefulWidget {
@@ -802,7 +803,10 @@ class _VendorProductDetailState extends State<VendorProductDetail>
           ),
           OutlinedButton(
             onPressed: () {
-              // Navigate to seller page
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const VendorProfile()),
+              );
             },
             style: OutlinedButton.styleFrom(
               shape: RoundedRectangleBorder(

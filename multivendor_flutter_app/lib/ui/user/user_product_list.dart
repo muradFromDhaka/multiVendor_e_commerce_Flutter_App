@@ -10,6 +10,7 @@ import 'package:multivendor_flutter_app/services/category_service.dart';
 import 'package:multivendor_flutter_app/services/vendor_service.dart';
 import 'package:multivendor_flutter_app/ui/auth/login_page.dart';
 import 'package:multivendor_flutter_app/ui/public/cart_page.dart';
+import 'package:multivendor_flutter_app/ui/public/public_category_page.dart';
 import 'package:multivendor_flutter_app/ui/public/public_drawer.dart';
 import 'package:multivendor_flutter_app/ui/public/public_product_details.dart';
 import 'package:multivendor_flutter_app/ui/public/public_productsearch_results.dart';
@@ -422,8 +423,26 @@ class _UserProductListPageState extends State<UserProductListPage>
     _showSnackBar('Processing order for ${product.name}');
   }
 
-  void _navigateToCategory(int categoryId, String categoryName) {
-    _showSnackBar('Showing $categoryName products');
+  // Navigate to category → show category products
+  void _navigateToCategory(int? categoryId, String categoryName) {
+    print(
+      "Navigating to category-------------------- → $categoryName, id: $categoryId",
+    );
+
+    if (categoryId == null) {
+      print("Category ID is NULL------------------------- → $categoryName");
+      return; // prevent navigation
+    }
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => CategoryProductsPage(
+          categoryId: categoryId,
+          categoryName: categoryName,
+        ),
+      ),
+    );
   }
 
   void _navigateToVendor(int vendorId, String vendorName, String? logoUrl) {

@@ -242,6 +242,7 @@ class _CartPageState extends State<CartPage> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: const Text(
           'My Cart',
           style: TextStyle(fontWeight: FontWeight.w600),

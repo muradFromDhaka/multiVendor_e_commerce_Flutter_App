@@ -1,4 +1,3 @@
-
 class ProductResponse {
   final int id;
   final String name;
@@ -60,22 +59,53 @@ class ProductResponse {
     this.cartVendorId = 0,
   });
 
+  // factory ProductResponse.fromJson(Map<String, dynamic> json) {
+  //   return ProductResponse(
+  //     id: json["id"],
+  //     name: json["name"],
+  //     description: json["description"],
+  //     price: (json["price"] as num).toDouble(),
+  //     discountPrice: json["discountPrice"] != null
+  //         ? (json["discountPrice"] as num).toDouble()
+  //         : null,
+  //     stockQuantity: json["stockQuantity"],
+  //     status: json["status"],
+  //     sku: json["sku"],
+  //     averageRating: json["averageRating"] != null
+  //         ? (json["averageRating"] as num).toDouble()
+  //         : null,
+  //     totalReviews: json["totalReviews"],
+  //     imageUrls: json["imageUrls"] != null
+  //         ? List<String>.from(json["imageUrls"])
+  //         : null,
+  //     categoryId: json["categoryId"],
+  //     categoryName: json["categoryName"],
+  //     brandId: json["brandId"],
+  //     brandName: json["brandName"],
+  //     vendorId: json["vendorId"],
+  //     vendorName: json["vendorName"],
+  //     deleted: json["deleted"],
+  //     createdAt: json["createdAt"],
+  //     updatedAt: json["updatedAt"],
+  //     soldCount: json["soldCount"],
+  //     releaseDate: json["releaseDate"],
+  //     cartQuantity: 1, // default
+  //     cartVendorId: json["vendorId"] ?? 0, // fallback
+  //   );
+  // }
+
   factory ProductResponse.fromJson(Map<String, dynamic> json) {
     return ProductResponse(
-      id: json["id"],
-      name: json["name"],
+      id: json["id"] ?? 0, // fallback
+      name: json["name"] ?? "No Name",
       description: json["description"],
-      price: (json["price"] as num).toDouble(),
-      discountPrice: json["discountPrice"] != null
-          ? (json["discountPrice"] as num).toDouble()
-          : null,
-      stockQuantity: json["stockQuantity"],
+      price: (json["price"] as num?)?.toDouble() ?? 0.0, // fallback
+      discountPrice: (json["discountPrice"] as num?)?.toDouble(),
+      stockQuantity: json["stockQuantity"] ?? 0,
       status: json["status"],
-      sku: json["sku"],
-      averageRating: json["averageRating"] != null
-          ? (json["averageRating"] as num).toDouble()
-          : null,
-      totalReviews: json["totalReviews"],
+      sku: json["sku"] ?? "",
+      averageRating: (json["averageRating"] as num?)?.toDouble(),
+      totalReviews: json["totalReviews"] ?? 0,
       imageUrls: json["imageUrls"] != null
           ? List<String>.from(json["imageUrls"])
           : null,
@@ -90,10 +120,8 @@ class ProductResponse {
       updatedAt: json["updatedAt"],
       soldCount: json["soldCount"],
       releaseDate: json["releaseDate"],
-      cartQuantity: 1, // default
-      cartVendorId: json["vendorId"] ?? 0, // fallback
+      cartQuantity: 1,
+      cartVendorId: json["vendorId"] ?? 0,
     );
   }
 }
-
-
